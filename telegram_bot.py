@@ -39,42 +39,158 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     await update.message.reply_text(welcome_text, parse_mode='Markdown')
 
-# Поиск информации о Mercedes
-def search_mercedes_info(query):
+# Улучшенный поиск с подробной информацией
+def search_detailed_info(query):
     try:
-        # Добавляем Mercedes-Benz к запросу для лучшего поиска
-        search_query = f"Mercedes-Benz {query}"
-        search_results = wikipedia.search(search_query)
+        # Пробуем разные варианты поиска
+        search_variants = [
+            f"Mercedes-Benz {query}",
+            f"Mercedes {query}",
+            query,
+            f"{query} автомобиль",
+            f"{query} Mercedes"
+        ]
         
-        if not search_results:
-            # Пробуем без Mercedes-Benz
-            search_results = wikipedia.search(query)
-            if not search_results:
-                return "❌ Информация не найдена. Попробуйте другой запрос.", None
+        for search_query in search_variants:
+            try:
+                search_results = wikipedia.search(search_query)
+                if search_results:
+                    page_title = search_results[0]
+                    
+                    # Берем больше текста для подробного ответа
+                    summary = wikipedia.summary(page_title, sentences=8)
+                    
+                    # Получаем полную страницу для дополнительной информации
+                    page = wikipedia.page(page_title)
+                    
+                    # Ищем картинку
+                    image_url = None
+                    for img in page.images[:10]:
+                        if any(ext in img.lower() for ext in ['.jpg', '.jpeg', '.png', '.webp']):
+                            if any(keyword in img.lower() for keyword in ['car', 'vehicle', 'model', 'mercedes', 'auto']):
+                                image_url = img
+                                break
+                    if not image_url and page.images:
+                        for img in page.images:
+                            if any(ext in img.lower() for ext in ['.jpg', '.jpeg', '.png']):
+                                image_url = img
+                                break
+                    
+                    # Форматируем подробный ответ
+                    detailed_text = format_detailed_response(page_title, summary, page.url)
+                    return detailed_text, image_url
+                    
+            except wikipedia.exceptions.DisambiguationError as e:
+                # Если неоднозначность, берем первый вариант
+                if e.options:
+                    page_title = e.options[0]
+                    summary = wikipedia.summary(page_title, sentences=8)
+                    page = wikipedia.page(page_title)
+                    
+                    image_url = None
+                    for img in page.images[:5]:
+                        if any(ext in img.lower() for ext in ['.jpg', '.jpeg', '.png']):
+                            image_url = img
+                            break
+                    
+                    detailed_text = format_detailed_response(page_title, summary, page.url)
+                    return detailed_text, image_url
+                    
+            except wikipedia.exceptions.PageError:
+                continue
+            except Exception:
+                continue
         
-        page_title = search_results[0]
-        summary = wikipedia.summary(page_title, sentences=5)
-        
-        # Получаем картинку
-        page = wikipedia.page(page_title)
-        image_url = None
-        for img in page.images[:5]:
-            if any(ext in img.lower() for ext in ['.jpg', '.jpeg', '.png']):
-                image_url = img
-                break
-        
-        info_text = f"🔍 *{page_title}*\n\n{summary}\n\n*Источник: официальные данные*"
-        return info_text, image_url
-        
-    except wikipedia.exceptions.DisambiguationError as e:
-        options = "\n".join([f"• {opt}" for opt in e.options[:5]])
-        return f"🤔 Найдено несколько вариантов:\n\n{options}\n\n*Уточните запрос!*", None
-        
-    except wikipedia.exceptions.PageError:
-        return f"❌ Информация по запросу '{query}' не найдена.", None
+        # Если не нашли в Wikipedia, используем запасную информацию
+        return get_fallback_info(query), None
         
     except Exception as e:
-        return f"❌ Ошибка: {str(e)}", None
+        logger.error(f"Search error: {e}")
+        return get_fallback_info(query), None
+
+# Форматирование подробного ответа
+def format_detailed_response(title, summary, url):
+    # Очищаем текст от скобок
+    import re
+    clean_summary = re.sub(r'\[.*?\]', '', summary)
+    clean_summary = re.sub(r'\(.*?\)', '', clean_summary)
+    
+    detailed_text = f"🔍 *{title}*\n\n"
+    detailed_text += f"{clean_summary}\n\n"
+    detailed_text += f"📖 *Для более подробной информации:*\n{url}"
+    
+    return detailed_text
+
+# Запасная информация если Wikipedia не нашел
+def get_fallback_info(query):
+    fallback_data = {
+        'g-class': """🚙 *Mercedes-Benz G-Class*
+
+Подробная информация о легендарном внедорожнике:
+
+*История:* Производится с 1979 года, изначально разрабатывался для военных нужд, но стал символом роскоши и статуса.
+
+*Поколения:*
+• W460 (1979-1991) - первое поколение
+• W461 (1992-2018) - военная и утилитарная версия  
+• W463 (1990-настоящее время) - люксовая версия
+
+*Технические характеристики:*
+• Привод: постоянный полный 4MATIC
+• Двигатели: от 2.0L до 4.0L V8
+• Мощность: до 585 л.с. (G63 AMG)
+• Трансмиссия: 9-ступенчатая АКПП
+• Особенности: три блокируемых дифференциала, рамная конструкция
+
+*Цены:* от 12 900 000 ₽ до 25 000 000 ₽ за специальные версии""",
+
+        's-class': """🚗 *Mercedes-Benz S-Class*
+
+Флагманский седан, устанавливающий стандарты в автомобилестроении:
+
+*Поколения:*
+• W223 (2020-н.в.) - текущее поколение с технологией MBUX Hyperscreen
+• W222 (2013-2020) - революционный дизайн и автопилот
+• W221 (2005-2013) - элегантный и технологичный
+• W220 (1998-2005) - знаменитый "жук"
+
+*Технологии:*
+• DRIVE PILOT - система автономного вождения
+• MAGIC BODY CONTROL - адаптивная подвеска
+• ENERGIZING Comfort - система комфорта
+• Rear-seat entertainment - развлечения для задних пассажиров
+
+*Двигатели:* от S350d до S680 с мощностью до 612 л.с.
+
+*Цены:* от 8 900 000 ₽ до 18 000 000 ₽""",
+
+        'e-class': """🚘 *Mercedes-Benz E-Class*
+
+Бизнес-седан, идеально сочетающий комфорт и технологии:
+
+*Поколения:*
+• W214 (2023-н.в.) - новейшее поколение
+• W213 (2016-2023) - популярная модель с двойным экраном
+• W212 (2009-2016) - классический дизайн
+• W211 (2002-2009) - элегантное исполнение
+
+*Особенности:*
+• Система полуавтономного вождения
+• Двойной широкоэкранный дисплей
+• Активная система безопасности
+• Комфортные сиденья с подогревом и вентиляцией
+
+*Кузова:* седан, универсал, купе, кабриолет
+
+*Цены:* от 5 200 000 ₽ до 9 500 000 ₽"""
+    }
+    
+    query_lower = query.lower()
+    for key, value in fallback_data.items():
+        if key in query_lower:
+            return value
+    
+    return f"🔍 *Информация по запросу '{query}'*\n\nК сожалению, не удалось найти подробную информацию в базе данных. Попробуйте уточнить запрос или обратиться к официальному дилеру Mercedes-Benz."
 
 # Обработчик сообщений
 async def handle_all_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -83,9 +199,9 @@ async def handle_all_messages(update: Update, context: ContextTypes.DEFAULT_TYPE
     if user_message.startswith('/'):
         return
     
-    await update.message.reply_text("🔍 *Ищу информацию...*", parse_mode='Markdown')
+    await update.message.reply_text("🔍 *Ищу подробную информацию...*", parse_mode='Markdown')
     
-    info_text, image_url = search_mercedes_info(user_message)
+    info_text, image_url = search_detailed_info(user_message)
     
     if image_url:
         try:
@@ -94,7 +210,8 @@ async def handle_all_messages(update: Update, context: ContextTypes.DEFAULT_TYPE
                 caption=info_text,
                 parse_mode='Markdown'
             )
-        except:
+        except Exception as e:
+            logger.error(f"Image error: {e}")
             await update.message.reply_text(info_text, parse_mode='Markdown')
     else:
         await update.message.reply_text(info_text, parse_mode='Markdown')
@@ -107,7 +224,7 @@ def main():
         application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_all_messages))
         
         print("🤖 ИИ-бот Mercedes запущен!")
-        print("✅ Готов отвечать на вопросы про Mercedes")
+        print("✅ Дает подробные ответы на любые запросы")
         application.run_polling()
         
     except Exception as e:
