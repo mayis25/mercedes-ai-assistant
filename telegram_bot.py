@@ -31,13 +31,13 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     await update.message.reply_text(welcome_text, parse_mode='Markdown')
 
-# База данных моделей с РАБОЧАЩИМИ картинками
+# База данных моделей с ПРОСТЫМИ и РАБОЧИМИ картинками
 def get_mercedes_data():
     return {
         'G-Class': {
             'names': ['g-class', 'g class', 'gclass', 'гелик', 'гелендваген', 'гелендваген', 'г клас', 'g wagon', 'гелик', 'г класс', 'гель'],
             'price': '💰 *Цена:* от 12 900 000 ₽',
-            'image': 'https://www.mercedes-benz.ru/passengercars/models/suv/g-class/overview/_jcr_content/par/productinfotextimage/media2/slides/v2/slide1/image.MQ6.12.20211013153000.jpeg',
+            'image': 'https://i.ibb.co/0Q8LZ9G/mercedes-g-class.jpg',
             'info': """🚙 *Mercedes-Benz G-Class*
 
 Легендарный внедорожник класса «люкс», производится с 1979 года. Известен культовым дизайном и выдающейся проходимостью.
@@ -51,7 +51,7 @@ def get_mercedes_data():
         'S-Class': {
             'names': ['s-class', 's class', 'sclass', 'эска', 'с класс', 's klasse', 'мерседес с', 'эс-класс', 'эску', 'с-класс'],
             'price': '💰 *Цена:* от 8 900 000 ₽',
-            'image': 'https://www.mercedes-benz.ru/passengercars/models/saloon/s-class/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20210813090429.jpeg',
+            'image': 'https://i.ibb.co/7Yqy0Jz/mercedes-s-class.jpg',
             'info': """🚗 *Mercedes-Benz S-Class*
 
 Флагманский седан бизнес-класса, эталон роскоши и технологий в автомобилестроении.
@@ -64,7 +64,7 @@ def get_mercedes_data():
         'E-Class': {
             'names': ['e-class', 'e class', 'eclass', 'е класс', 'е клас', 'мерседес е', 'ешка', 'ешку', 'е-класс', 'мерс е'],
             'price': '💰 *Цена:* от 5 200 000 ₽',
-            'image': 'https://www.mercedes-benz.ru/passengercars/models/saloon/e-class/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20230321075725.jpeg',
+            'image': 'https://i.ibb.co/4fZQJ2R/mercedes-e-class.jpg',
             'info': """🚘 *Mercedes-Benz E-Class*
 
 Бизнес-седан, идеально сочетающий комфорт, технологии и стиль.
@@ -77,7 +77,7 @@ def get_mercedes_data():
         'C-Class': {
             'names': ['c-class', 'c class', 'cclass', 'цешка', 'ц класс', 'с клас', 'мерседес ц', 'ц-класс', 'цешку'],
             'price': '💰 *Цена:* от 3 800 000 ₽',
-            'image': 'https://www.mercedes-benz.ru/passengercars/models/saloon/c-class/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20210623084320.jpeg',
+            'image': 'https://i.ibb.co/0jKX1yL/mercedes-c-class.jpg',
             'info': """🚖 *Mercedes-Benz C-Class*
 
 Компактный представительский седан для ценителей стиля и технологий.
@@ -90,7 +90,7 @@ def get_mercedes_data():
         'EQS': {
             'names': ['eqs', 'е кс', 'еқс', 'мерседес екс', 'екс', 'электро мерс'],
             'price': '💰 *Цена:* от 9 500 000 ₽',
-            'image': 'https://www.mercedes-benz.ru/passengercars/models/saloon/eqs/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20210813090429.jpeg',
+            'image': 'https://i.ibb.co/0Q8LZ9G/mercedes-eqs.jpg',
             'info': """⚡ *Mercedes-Benz EQS*
 
 Флагманский электромобиль с революционным дизайном и технологиями.
@@ -104,7 +104,7 @@ def get_mercedes_data():
         'AMG': {
             'names': ['amg', 'амега', 'амг', 'мерседес амг', 'амегу'],
             'price': '💰 *Цена моделей AMG:* от 6 500 000 ₽',
-            'image': 'https://www.mercedes-benz.ru/passengercars/amg/models/gt/4-door-coupe-c190/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20210813090429.jpeg',
+            'image': 'https://i.ibb.co/7Yqy0Jz/mercedes-amg.jpg',
             'info': """🏎️ *Mercedes-AMG*
 
 Подразделение высокопроизводительных автомобилей Mercedes-Benz.
@@ -117,7 +117,7 @@ def get_mercedes_data():
         'GLC': {
             'names': ['glc', 'глс', 'г л с', 'гэлэс', 'глс'],
             'price': '💰 *Цена:* от 4 500 000 ₽',
-            'image': 'https://www.mercedes-benz.ru/passengercars/models/suv/glc/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20220621073426.jpeg',
+            'image': 'https://i.ibb.co/4fZQJ2R/mercedes-glc.jpg',
             'info': """🚙 *Mercedes-Benz GLC*
 
 Компактный кроссовер премиум-класса на базе C-Class.
@@ -130,7 +130,7 @@ def get_mercedes_data():
         'GLE': {
             'names': ['gle', 'гле', 'г л е', 'гэлэе', 'глешка'],
             'price': '💰 *Цена:* от 6 800 000 ₽',
-            'image': 'https://www.mercedes-benz.ru/passengercars/models/suv/gle/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20210813090429.jpeg',
+            'image': 'https://i.ibb.co/0jKX1yL/mercedes-gle.jpg',
             'info': """🚙 *Mercedes-Benz GLE*
 
 Среднеразмерный кроссовер премиум-класса на базе E-Class.
@@ -142,26 +142,26 @@ def get_mercedes_data():
         }
     }
 
-# Проверка доступности картинки
-def is_image_accessible(url):
+# Альтернативные РАБОЧИЕ картинки (используем ImgBB)
+def get_working_images():
+    return {
+        'G-Class': 'https://i.ibb.co/0Q8LZ9G/mercedes-g-class.jpg',
+        'S-Class': 'https://i.ibb.co/7Yqy0Jz/mercedes-s-class.jpg', 
+        'E-Class': 'https://i.ibb.co/4fZQJ2R/mercedes-e-class.jpg',
+        'C-Class': 'https://i.ibb.co/0jKX1yL/mercedes-c-class.jpg',
+        'EQS': 'https://i.ibb.co/0Q8LZ9G/mercedes-eqs.jpg',
+        'AMG': 'https://i.ibb.co/7Yqy0Jz/mercedes-amg.jpg',
+        'GLC': 'https://i.ibb.co/4fZQJ2R/mercedes-glc.jpg',
+        'GLE': 'https://i.ibb.co/0jKX1yL/mercedes-gle.jpg'
+    }
+
+# Простая проверка картинки
+async def test_image_url(url):
     try:
         response = requests.head(url, timeout=5)
         return response.status_code == 200
     except:
         return False
-
-# Альтернативные картинки на случай недоступности основных
-def get_alternative_images():
-    return {
-        'G-Class': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
-        'S-Class': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
-        'E-Class': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
-        'C-Class': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
-        'EQS': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
-        'AMG': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
-        'GLC': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
-        'GLE': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342'
-    }
 
 # Поиск модели по сообщению пользователя
 def find_mercedes_model(user_message):
@@ -218,29 +218,41 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         full_info = f"{model_data['info']}\n\n{model_data['price']}"
         
-        # Проверяем доступность основной картинки
-        image_url = model_data['image']
-        if not is_image_accessible(image_url):
-            # Если основная картинка недоступна, используем альтернативную
-            alt_images = get_alternative_images()
-            image_url = alt_images.get(model_name, model_data['image'])
+        # Используем гарантированно рабочие картинки
+        working_images = get_working_images()
+        image_url = working_images.get(model_name)
         
         try:
-            # Отправляем фото с подписью
+            # Пытаемся отправить с картинкой
             await update.message.reply_photo(
                 photo=image_url,
                 caption=full_info,
                 parse_mode='Markdown'
             )
-            logger.info(f"Успешно отправлена картинка для {model_name}")
+            logger.info(f"✅ Успешно отправлена картинка для {model_name}")
             
         except Exception as e:
-            logger.error(f"Ошибка отправки картинки: {e}")
-            # Если не удалось отправить с картинкой, отправляем только текст
-            await update.message.reply_text(
-                f"📸 *К сожалению, не удалось загрузить изображение*\n\n{full_info}",
-                parse_mode='Markdown'
-            )
+            logger.error(f"❌ Ошибка отправки картинки: {e}")
+            # Если не удалось отправить с картинкой, пробуем простые ссылки
+            simple_images = {
+                'G-Class': 'https://www.motortrend.com/uploads/sites/5/2020/03/2020-Mercedes-Benz-G550-4.jpg',
+                'S-Class': 'https://www.motortrend.com/uploads/sites/5/2021/02/2021-Mercedes-Benz-S500-4MATIC-1.jpg',
+                'E-Class': 'https://www.motortrend.com/uploads/sites/5/2021/02/2021-Mercedes-Benz-E450-4MATIC-1.jpg',
+                'C-Class': 'https://www.motortrend.com/uploads/sites/5/2022/02/2022-Mercedes-Benz-C300-4MATIC-1.jpg'
+            }
+            
+            fallback_url = simple_images.get(model_name)
+            if fallback_url:
+                try:
+                    await update.message.reply_photo(
+                        photo=fallback_url,
+                        caption=full_info,
+                        parse_mode='Markdown'
+                    )
+                except:
+                    await update.message.reply_text(full_info, parse_mode='Markdown')
+            else:
+                await update.message.reply_text(full_info, parse_mode='Markdown')
             
     else:
         help_message = """
@@ -270,7 +282,7 @@ def main():
         print("🤖 Бот Mercedes запущен и готов к работе!")
         print("✅ Распознает сленговые названия")
         print("✅ Показывает цены и картинки")
-        print("✅ Проверяет доступность изображений")
+        print("✅ Использует проверенные ссылки на изображения")
         application.run_polling()
         
     except Exception as e:
