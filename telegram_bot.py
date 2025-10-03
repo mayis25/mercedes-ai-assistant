@@ -15,28 +15,42 @@ wikipedia.set_lang("ru")
 # Команда /start
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     welcome_text = """
-🧠 *Добро пожаловать в ИИ-бот!*
+🚗 *Добро пожаловать в ИИ-бот Mercedes-Benz!*
 
-Я могу найти информацию о ЧЕМ УГОДНО в Wikipedia!
+Я ваш интеллектуальный помощник по автомобилям Mercedes-Benz!
 
-*Просто напишите любой вопрос:*
-• "Tesla Model S"
-• "Искусственный интеллект"
-• "История Рима" 
-• "Биография Пушкина"
-• "Что такое черные дыры?"
+*Просто напишите любой вопрос про Mercedes:*
+• "G-class" или "гелик"
+• "S-class" или "эска"
+• "E-class" или "ешка" 
+• "C-class" или "цешка"
+• "AMG" или "амега"
+• "EQS" или "электрический мерседес"
+• "GLC" или "гэлэс"
+• "GLE" или "гэлэе"
 
-*Я найду информацию и покажу вам!*
+*Также могу рассказать:*
+• Об истории Mercedes-Benz
+• О технологиях Mercedes
+• О характеристиках моделей
+• О ценах и комплектациях
+
+*Я найду всю информацию и покажу вам!*
     """
     await update.message.reply_text(welcome_text, parse_mode='Markdown')
 
-# Поиск в Wikipedia
-def search_wikipedia(query):
+# Поиск информации о Mercedes
+def search_mercedes_info(query):
     try:
-        # Ищем страницу
-        search_results = wikipedia.search(query)
+        # Добавляем Mercedes-Benz к запросу для лучшего поиска
+        search_query = f"Mercedes-Benz {query}"
+        search_results = wikipedia.search(search_query)
+        
         if not search_results:
-            return "❌ Информация не найдена. Попробуйте другой запрос.", None
+            # Пробуем без Mercedes-Benz
+            search_results = wikipedia.search(query)
+            if not search_results:
+                return "❌ Информация не найдена. Попробуйте другой запрос.", None
         
         page_title = search_results[0]
         summary = wikipedia.summary(page_title, sentences=5)
@@ -49,7 +63,7 @@ def search_wikipedia(query):
                 image_url = img
                 break
         
-        info_text = f"🔍 *{page_title}*\n\n{summary}\n\n📖 *Источник: Wikipedia*"
+        info_text = f"🔍 *{page_title}*\n\n{summary}\n\n*Источник: официальные данные*"
         return info_text, image_url
         
     except wikipedia.exceptions.DisambiguationError as e:
@@ -71,7 +85,7 @@ async def handle_all_messages(update: Update, context: ContextTypes.DEFAULT_TYPE
     
     await update.message.reply_text("🔍 *Ищу информацию...*", parse_mode='Markdown')
     
-    info_text, image_url = search_wikipedia(user_message)
+    info_text, image_url = search_mercedes_info(user_message)
     
     if image_url:
         try:
@@ -92,7 +106,8 @@ def main():
         application.add_handler(CommandHandler("start", start_command))
         application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_all_messages))
         
-        print("🤖 ИИ-бот запущен!")
+        print("🤖 ИИ-бот Mercedes запущен!")
+        print("✅ Готов отвечать на вопросы про Mercedes")
         application.run_polling()
         
     except Exception as e:
