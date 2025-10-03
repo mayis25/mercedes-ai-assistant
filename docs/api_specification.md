@@ -1,5 +1,5 @@
 # 🌐 Спецификация API
-
+ 
 ![API](https://img.shields.io/badge/API-Спецификация-green?style=flat-square)
 ![Версия](https://img.shields.io/badge/Версия-1.0.0-blue?style=flat-square)
 
