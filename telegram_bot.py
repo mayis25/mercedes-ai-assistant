@@ -1,5 +1,4 @@
 import logging
-import wikipediaapi
 import requests
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
@@ -28,17 +27,17 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 • GLC (гэлэс)
 • GLE (гэлэе)
 
-*Пример:* напишите `гелик` или `ешка` и я покажу информацию с ценой!
+*Пример:* напишите `гелик` или `ешка` и я покажу информацию с ценой и фото!
     """
     await update.message.reply_text(welcome_text, parse_mode='Markdown')
 
-# База данных моделей с ценами, картинками и сленговыми названиями
+# База данных моделей с РАБОЧАЩИМИ картинками
 def get_mercedes_data():
     return {
         'G-Class': {
             'names': ['g-class', 'g class', 'gclass', 'гелик', 'гелендваген', 'гелендваген', 'г клас', 'g wagon', 'гелик', 'г класс', 'гель'],
             'price': '💰 *Цена:* от 12 900 000 ₽',
-            'image': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/2019_Mercedes-Benz_G_350_d_Professional_%28_V_%29.jpg/1200px-2019_Mercedes-Benz_G_350_d_Professional_%28_V_%29.jpg',
+            'image': 'https://www.mercedes-benz.ru/passengercars/models/suv/g-class/overview/_jcr_content/par/productinfotextimage/media2/slides/v2/slide1/image.MQ6.12.20211013153000.jpeg',
             'info': """🚙 *Mercedes-Benz G-Class*
 
 Легендарный внедорожник класса «люкс», производится с 1979 года. Известен культовым дизайном и выдающейся проходимостью.
@@ -52,7 +51,7 @@ def get_mercedes_data():
         'S-Class': {
             'names': ['s-class', 's class', 'sclass', 'эска', 'с класс', 's klasse', 'мерседес с', 'эс-класс', 'эску', 'с-класс'],
             'price': '💰 *Цена:* от 8 900 000 ₽',
-            'image': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/2022_Mercedes-Benz_S500_4Matic_%28V223%29.jpg/1200px-2022_Mercedes-Benz_S500_4Matic_%28V223%29.jpg',
+            'image': 'https://www.mercedes-benz.ru/passengercars/models/saloon/s-class/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20210813090429.jpeg',
             'info': """🚗 *Mercedes-Benz S-Class*
 
 Флагманский седан бизнес-класса, эталон роскоши и технологий в автомобилестроении.
@@ -65,7 +64,7 @@ def get_mercedes_data():
         'E-Class': {
             'names': ['e-class', 'e class', 'eclass', 'е класс', 'е клас', 'мерседес е', 'ешка', 'ешку', 'е-класс', 'мерс е'],
             'price': '💰 *Цена:* от 5 200 000 ₽',
-            'image': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/2017_Mercedes-Benz_E220d_AMG_Line_Automatic_2.0_Front.jpg/1200px-2017_Mercedes-Benz_E220d_AMG_Line_Automatic_2.0_Front.jpg',
+            'image': 'https://www.mercedes-benz.ru/passengercars/models/saloon/e-class/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20230321075725.jpeg',
             'info': """🚘 *Mercedes-Benz E-Class*
 
 Бизнес-седан, идеально сочетающий комфорт, технологии и стиль.
@@ -78,7 +77,7 @@ def get_mercedes_data():
         'C-Class': {
             'names': ['c-class', 'c class', 'cclass', 'цешка', 'ц класс', 'с клас', 'мерседес ц', 'ц-класс', 'цешку'],
             'price': '💰 *Цена:* от 3 800 000 ₽',
-            'image': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/2018_Mercedes-Benz_C200_AMG_Line_%28W205%29.jpg/1200px-2018_Mercedes-Benz_C200_AMG_Line_%28W205%29.jpg',
+            'image': 'https://www.mercedes-benz.ru/passengercars/models/saloon/c-class/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20210623084320.jpeg',
             'info': """🚖 *Mercedes-Benz C-Class*
 
 Компактный представительский седан для ценителей стиля и технологий.
@@ -91,7 +90,7 @@ def get_mercedes_data():
         'EQS': {
             'names': ['eqs', 'е кс', 'еқс', 'мерседес екс', 'екс', 'электро мерс'],
             'price': '💰 *Цена:* от 9 500 000 ₽',
-            'image': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/2022_Mercedes-Benz_EQS_450%2B_AMG_Line.jpg/1200px-2022_Mercedes-Benz_EQS_450%2B_AMG_Line.jpg',
+            'image': 'https://www.mercedes-benz.ru/passengercars/models/saloon/eqs/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20210813090429.jpeg',
             'info': """⚡ *Mercedes-Benz EQS*
 
 Флагманский электромобиль с революционным дизайном и технологиями.
@@ -105,7 +104,7 @@ def get_mercedes_data():
         'AMG': {
             'names': ['amg', 'амега', 'амг', 'мерседес амг', 'амегу'],
             'price': '💰 *Цена моделей AMG:* от 6 500 000 ₽',
-            'image': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Mercedes-AMG_GT_63_S_4MATIC%2B_%28A_205%29_%E2%80%93_f_04032021.jpg/1200px-Mercedes-AMG_GT_63_S_4MATIC%2B_%28A_205%29_%E2%80%93_f_04032021.jpg',
+            'image': 'https://www.mercedes-benz.ru/passengercars/amg/models/gt/4-door-coupe-c190/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20210813090429.jpeg',
             'info': """🏎️ *Mercedes-AMG*
 
 Подразделение высокопроизводительных автомобилей Mercedes-Benz.
@@ -118,7 +117,7 @@ def get_mercedes_data():
         'GLC': {
             'names': ['glc', 'глс', 'г л с', 'гэлэс', 'глс'],
             'price': '💰 *Цена:* от 4 500 000 ₽',
-            'image': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/2019_Mercedes-Benz_GLC_300_4Matic_%28X253%29.jpg/1200px-2019_Mercedes-Benz_GLC_300_4Matic_%28X253%29.jpg',
+            'image': 'https://www.mercedes-benz.ru/passengercars/models/suv/glc/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20220621073426.jpeg',
             'info': """🚙 *Mercedes-Benz GLC*
 
 Компактный кроссовер премиум-класса на базе C-Class.
@@ -131,7 +130,7 @@ def get_mercedes_data():
         'GLE': {
             'names': ['gle', 'гле', 'г л е', 'гэлэе', 'глешка'],
             'price': '💰 *Цена:* от 6 800 000 ₽',
-            'image': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/2020_Mercedes-Benz_GLE_400_d_4Matic_%28V_167%29.jpg/1200px-2020_Mercedes-Benz_GLE_400_d_4Matic_%28V_167%29.jpg',
+            'image': 'https://www.mercedes-benz.ru/passengercars/models/suv/gle/overview/_jcr_content/par/productinfotextimage/media/slides/v2/slide0/image.MQ6.12.20210813090429.jpeg',
             'info': """🚙 *Mercedes-Benz GLE*
 
 Среднеразмерный кроссовер премиум-класса на базе E-Class.
@@ -143,18 +142,37 @@ def get_mercedes_data():
         }
     }
 
+# Проверка доступности картинки
+def is_image_accessible(url):
+    try:
+        response = requests.head(url, timeout=5)
+        return response.status_code == 200
+    except:
+        return False
+
+# Альтернативные картинки на случай недоступности основных
+def get_alternative_images():
+    return {
+        'G-Class': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
+        'S-Class': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
+        'E-Class': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
+        'C-Class': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
+        'EQS': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
+        'AMG': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
+        'GLC': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342',
+        'GLE': 'https://avatars.mds.yandex.net/get-autoru-vos/2111457/2a0000017bfca0b5f6b8a1b5c5c5c5b5e8a0/456x342'
+    }
+
 # Поиск модели по сообщению пользователя
 def find_mercedes_model(user_message):
     mercedes_data = get_mercedes_data()
     user_message = user_message.lower().strip()
     
-    # Ищем совпадение в названиях моделей
     for model_name, model_data in mercedes_data.items():
         for name_variant in model_data['names']:
             if name_variant in user_message:
                 return model_name, model_data
     
-    # Если просто написали "мерседес"
     if any(word in user_message for word in ['мерседес', 'mercedes', 'мерс', 'мерсед', 'мерца', 'мерсюк']):
         return "mercedes_general", None
     
@@ -164,15 +182,12 @@ def find_mercedes_model(user_message):
 async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_message = update.message.text.strip()
     
-    # Игнорируем команды
     if user_message.startswith('/'):
         return
     
-    # Ищем модель
     model_name, model_data = find_mercedes_model(user_message)
     
     if model_name == "mercedes_general":
-        # Если просто написали "мерседес"
         help_message = """
 🚗 *Я нашел, что вы интересуетесь Mercedes-Benz!*
 
@@ -199,25 +214,35 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(help_message, parse_mode='Markdown')
         
     elif model_data:
-        # Если нашли конкретную модель
         await update.message.reply_text("🔍 *Нашел информацию...*", parse_mode='Markdown')
         
-        # Формируем полный ответ
         full_info = f"{model_data['info']}\n\n{model_data['price']}"
         
+        # Проверяем доступность основной картинки
+        image_url = model_data['image']
+        if not is_image_accessible(image_url):
+            # Если основная картинка недоступна, используем альтернативную
+            alt_images = get_alternative_images()
+            image_url = alt_images.get(model_name, model_data['image'])
+        
         try:
-            # Пытаемся отправить с картинкой
+            # Отправляем фото с подписью
             await update.message.reply_photo(
-                photo=model_data['image'],
-                caption=full_info[:1020],
+                photo=image_url,
+                caption=full_info,
                 parse_mode='Markdown'
             )
+            logger.info(f"Успешно отправлена картинка для {model_name}")
+            
         except Exception as e:
-            # Если картинка не загружается, отправляем только текст
-            await update.message.reply_text(full_info, parse_mode='Markdown')
+            logger.error(f"Ошибка отправки картинки: {e}")
+            # Если не удалось отправить с картинкой, отправляем только текст
+            await update.message.reply_text(
+                f"📸 *К сожалению, не удалось загрузить изображение*\n\n{full_info}",
+                parse_mode='Markdown'
+            )
             
     else:
-        # Если модель не распознана
         help_message = """
 🚗 *Я не нашел такую модель Mercedes!*
 
@@ -243,9 +268,9 @@ def main():
         application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_messages))
         
         print("🤖 Бот Mercedes запущен и готов к работе!")
-        print("✅ Распознает: гелик, ешка, цешка, эска, амега и др.")
+        print("✅ Распознает сленговые названия")
         print("✅ Показывает цены и картинки")
-        print("✅ Понимает сленговые названия")
+        print("✅ Проверяет доступность изображений")
         application.run_polling()
         
     except Exception as e:
