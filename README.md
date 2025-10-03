@@ -12,7 +12,7 @@
 
 ## 🚀 Quick Start
 
-1. **Посмотри требования:** `requirements/functional_requirements.md`
+1. **Посмотри функциональные требования:** `requirements/functional_requirements.md`
 2. **Посмотри архитектуру системы:** `docs/architecture.md`
 3. **Проверь сценарии использования:** `requirements/use_cases.md`
 
