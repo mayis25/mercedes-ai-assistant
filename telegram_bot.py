@@ -1,5 +1,4 @@
 import logging
-import wikipediaapi
 import requests
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
@@ -38,7 +37,7 @@ def get_mercedes_data():
         'G-Class': {
             'names': ['g-class', 'g class', 'gclass', 'гелик', 'гелендваген', 'гелендваген', 'г клас', 'g wagon', 'гелик', 'г класс', 'гель'],
             'price': '💰 *Цена:* от 12 900 000 ₽',
-            'image': 'https://i.ibb.co/0Q8LZ9G/mercedes-g-class.jpg',
+            'image': 'https://www.motortrend.com/uploads/sites/5/2020/03/2020-Mercedes-Benz-G550-4.jpg',
             'info': """🚙 *Mercedes-Benz G-Class*
 
 Легендарный внедорожник класса «люкс», производится с 1979 года. Известен культовым дизайном и выдающейся проходимостью.
@@ -47,12 +46,13 @@ def get_mercedes_data():
 • Привод: постоянный полный 4MATIC
 • Двигатели: бензиновые и дизельные V6, V8
 • Особенности: рамная конструкция, три блокируемых дифференциала
-• Мощность: до 585 л.с. (G63 AMG)"""
+• Мощность: до 585 л.с. (G63 AMG)""",
+            'link': 'https://www.mercedes-benz.ru/passengercars/models/suv/g-class/overview.html'
         },
         'S-Class': {
             'names': ['s-class', 's class', 'sclass', 'эска', 'с класс', 's klasse', 'мерседес с', 'эс-класс', 'эску', 'с-класс'],
             'price': '💰 *Цена:* от 8 900 000 ₽',
-            'image': 'https://i.ibb.co/7Yqy0Jz/mercedes-s-class.jpg',
+            'image': 'https://www.motortrend.com/uploads/sites/5/2021/02/2021-Mercedes-Benz-S500-4MATIC-1.jpg',
             'info': """🚗 *Mercedes-Benz S-Class*
 
 Флагманский седан бизнес-класса, эталон роскоши и технологий в автомобилестроении.
@@ -60,12 +60,13 @@ def get_mercedes_data():
 • Поколения: W223, W222, W221, W220
 • Двигатели: рядные 6, V8, гибридные
 • Особенности: система DRIVE PILOT, массажные кресла, технология MBUX Hyperscreen
-• Длина: от 5179 мм (длинная версия)"""
+• Длина: от 5179 мм (длинная версия)""",
+            'link': 'https://www.mercedes-benz.ru/passengercars/models/saloon/s-class/overview.html'
         },
         'E-Class': {
             'names': ['e-class', 'e class', 'eclass', 'е класс', 'е клас', 'мерседес е', 'ешка', 'ешку', 'е-класс', 'мерс е'],
             'price': '💰 *Цена:* от 5 200 000 ₽',
-            'image': 'https://i.ibb.co/4fZQJ2R/mercedes-e-class.jpg',
+            'image': 'https://www.motortrend.com/uploads/sites/5/2021/02/2021-Mercedes-Benz-E450-4MATIC-1.jpg',
             'info': """🚘 *Mercedes-Benz E-Class*
 
 Бизнес-седан, идеально сочетающий комфорт, технологии и стиль.
@@ -73,12 +74,13 @@ def get_mercedes_data():
 • Поколения: W214, W213, W212
 • Класс: бизнес-класс
 • Особенности: система полуавтономного вождения, двойной экран
-• Популярность: одна из самых продаваемых моделей Mercedes"""
+• Популярность: одна из самых продаваемых моделей Mercedes""",
+            'link': 'https://www.mercedes-benz.ru/passengercars/models/saloon/e-class/overview.html'
         },
         'C-Class': {
             'names': ['c-class', 'c class', 'cclass', 'цешка', 'ц класс', 'с клас', 'мерседес ц', 'ц-класс', 'цешку'],
             'price': '💰 *Цена:* от 3 800 000 ₽',
-            'image': 'https://i.ibb.co/0jKX1yL/mercedes-c-class.jpg',
+            'image': 'https://www.motortrend.com/uploads/sites/5/2022/02/2022-Mercedes-Benz-C300-4MATIC-1.jpg',
             'info': """🚖 *Mercedes-Benz C-Class*
 
 Компактный представительский седан для ценителей стиля и технологий.
@@ -86,12 +88,13 @@ def get_mercedes_data():
 • Поколения: W206, W205
 • Класс: компактный представительский
 • Особенности: спортивный дизайн, технология MBUX
-• Разгон: C43 AMG - 4.6 сек до 100 км/ч"""
+• Разгон: C43 AMG - 4.6 сек до 100 км/ч""",
+            'link': 'https://www.mercedes-benz.ru/passengercars/models/saloon/c-class/overview.html'
         },
         'EQS': {
             'names': ['eqs', 'е кс', 'еқс', 'мерседес екс', 'екс', 'электро мерс'],
             'price': '💰 *Цена:* от 9 500 000 ₽',
-            'image': 'https://i.ibb.co/0Q8LZ9G/mercedes-eqs.jpg',
+            'image': 'https://www.motortrend.com/uploads/sites/5/2022/02/2022-Mercedes-Benz-EQS-450-Plus-1.jpg',
             'info': """⚡ *Mercedes-Benz EQS*
 
 Флагманский электромобиль с революционным дизайном и технологиями.
@@ -100,12 +103,13 @@ def get_mercedes_data():
 • Технологии: MBUX Hyperscreen, автопилот
 • Разгон: 4.3 сек до 100 км/ч
 • Класс: люкс электромобиль
-• Мощность: до 524 л.с."""
+• Мощность: до 524 л.с.""",
+            'link': 'https://www.mercedes-benz.ru/passengercars/models/saloon/eqs/overview.html'
         },
         'AMG': {
             'names': ['amg', 'амега', 'амг', 'мерседес амг', 'амегу'],
             'price': '💰 *Цена моделей AMG:* от 6 500 000 ₽',
-            'image': 'https://i.ibb.co/7Yqy0Jz/mercedes-amg.jpg',
+            'image': 'https://www.motortrend.com/uploads/sites/5/2021/02/2021-Mercedes-AMG-GT-4-Door-1.jpg',
             'info': """🏎️ *Mercedes-AMG*
 
 Подразделение высокопроизводительных автомобилей Mercedes-Benz.
@@ -113,12 +117,13 @@ def get_mercedes_data():
 • Основан: 1967 год
 • Особенности: handcrafted engines, спортивные характеристики
 • Модели: C63, E63, G63, GT
-• Мощность: до 831 л.с. (GT Black Series)"""
+• Мощность: до 831 л.с. (GT Black Series)""",
+            'link': 'https://www.mercedes-benz.ru/passengercars/amg/models.html'
         },
         'GLC': {
             'names': ['glc', 'глс', 'г л с', 'гэлэс', 'глс'],
             'price': '💰 *Цена:* от 4 500 000 ₽',
-            'image': 'https://i.ibb.co/4fZQJ2R/mercedes-glc.jpg',
+            'image': 'https://www.motortrend.com/uploads/sites/5/2023/02/2023-Mercedes-Benz-GLC-300-4MATIC-1.jpg',
             'info': """🚙 *Mercedes-Benz GLC*
 
 Компактный кроссовер премиум-класса на базе C-Class.
@@ -126,12 +131,13 @@ def get_mercedes_data():
 • Поколения: X254, X253
 • Класс: компактный кроссовер
 • Особенности: полный привод 4MATIC, современный дизайн
-• Объем багажника: 550 литров"""
+• Объем багажника: 550 литров""",
+            'link': 'https://www.mercedes-benz.ru/passengercars/models/suv/glc/overview.html'
         },
         'GLE': {
             'names': ['gle', 'гле', 'г л е', 'гэлэе', 'глешка'],
             'price': '💰 *Цена:* от 6 800 000 ₽',
-            'image': 'https://i.ibb.co/0jKX1yL/mercedes-gle.jpg',
+            'image': 'https://www.motortrend.com/uploads/sites/5/2023/02/2023-Mercedes-Benz-GLE-450-4MATIC-1.jpg',
             'info': """🚙 *Mercedes-Benz GLE*
 
 Среднеразмерный кроссовер премиум-класса на базе E-Class.
@@ -139,30 +145,23 @@ def get_mercedes_data():
 • Поколения: V167, W166
 • Класс: среднеразмерный кроссовер
 • Особенности: просторный салон, продвинутые системы помощи
-• Двигатели: бензиновые, дизельные, гибридные"""
+• Двигатели: бензиновые, дизельные, гибридные""",
+            'link': 'https://www.mercedes-benz.ru/passengercars/models/suv/gle/overview.html'
         }
     }
 
-# Альтернативные РАБОЧИЕ картинки (используем ImgBB)
+# Альтернативные РАБОЧИЕ картинки
 def get_working_images():
     return {
-        'G-Class': 'https://i.ibb.co/0Q8LZ9G/mercedes-g-class.jpg',
-        'S-Class': 'https://i.ibb.co/7Yqy0Jz/mercedes-s-class.jpg', 
-        'E-Class': 'https://i.ibb.co/4fZQJ2R/mercedes-e-class.jpg',
-        'C-Class': 'https://i.ibb.co/0jKX1yL/mercedes-c-class.jpg',
-        'EQS': 'https://i.ibb.co/0Q8LZ9G/mercedes-eqs.jpg',
-        'AMG': 'https://i.ibb.co/7Yqy0Jz/mercedes-amg.jpg',
-        'GLC': 'https://i.ibb.co/4fZQJ2R/mercedes-glc.jpg',
-        'GLE': 'https://i.ibb.co/0jKX1yL/mercedes-gle.jpg'
+        'G-Class': 'https://www.motortrend.com/uploads/sites/5/2020/03/2020-Mercedes-Benz-G550-4.jpg',
+        'S-Class': 'https://www.motortrend.com/uploads/sites/5/2021/02/2021-Mercedes-Benz-S500-4MATIC-1.jpg',
+        'E-Class': 'https://www.motortrend.com/uploads/sites/5/2021/02/2021-Mercedes-Benz-E450-4MATIC-1.jpg',
+        'C-Class': 'https://www.motortrend.com/uploads/sites/5/2022/02/2022-Mercedes-Benz-C300-4MATIC-1.jpg',
+        'EQS': 'https://www.motortrend.com/uploads/sites/5/2022/02/2022-Mercedes-Benz-EQS-450-Plus-1.jpg',
+        'AMG': 'https://www.motortrend.com/uploads/sites/5/2021/02/2021-Mercedes-AMG-GT-4-Door-1.jpg',
+        'GLC': 'https://www.motortrend.com/uploads/sites/5/2023/02/2023-Mercedes-Benz-GLC-300-4MATIC-1.jpg',
+        'GLE': 'https://www.motortrend.com/uploads/sites/5/2023/02/2023-Mercedes-Benz-GLE-450-4MATIC-1.jpg'
     }
-
-# Простая проверка картинки
-async def test_image_url(url):
-    try:
-        response = requests.head(url, timeout=5)
-        return response.status_code == 200
-    except:
-        return False
 
 # Поиск модели по сообщению пользователя
 def find_mercedes_model(user_message):
@@ -217,7 +216,8 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif model_data:
         await update.message.reply_text("🔍 *Нашел информацию...*", parse_mode='Markdown')
         
-        full_info = f"{model_data['info']}\n\n{model_data['price']}"
+        # Формируем полный ответ с ссылкой
+        full_info = f"{model_data['info']}\n\n{model_data['price']}\n\n📖 *Для более подробной информации о {model_name} посетите:*\n{model_data['link']}"
         
         # Используем гарантированно рабочие картинки
         working_images = get_working_images()
@@ -236,10 +236,14 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
             logger.error(f"❌ Ошибка отправки картинки: {e}")
             # Если не удалось отправить с картинкой, пробуем простые ссылки
             simple_images = {
-                'G-Class': 'https://www.motortrend.com/uploads/sites/5/2020/03/2020-Mercedes-Benz-G550-4.jpg',
-                'S-Class': 'https://www.motortrend.com/uploads/sites/5/2021/02/2021-Mercedes-Benz-S500-4MATIC-1.jpg',
-                'E-Class': 'https://www.motortrend.com/uploads/sites/5/2021/02/2021-Mercedes-Benz-E450-4MATIC-1.jpg',
-                'C-Class': 'https://www.motortrend.com/uploads/sites/5/2022/02/2022-Mercedes-Benz-C300-4MATIC-1.jpg'
+                'G-Class': 'https://cdn.motor1.com/images/mgl/7oGQe/s1/mercedes-benz-g-class.jpg',
+                'S-Class': 'https://cdn.motor1.com/images/mgl/7oGQe/s1/mercedes-benz-s-class.jpg',
+                'E-Class': 'https://cdn.motor1.com/images/mgl/7oGQe/s1/mercedes-benz-e-class.jpg',
+                'C-Class': 'https://cdn.motor1.com/images/mgl/7oGQe/s1/mercedes-benz-c-class.jpg',
+                'EQS': 'https://cdn.motor1.com/images/mgl/7oGQe/s1/mercedes-benz-eqs.jpg',
+                'AMG': 'https://cdn.motor1.com/images/mgl/7oGQe/s1/mercedes-amg-gt.jpg',
+                'GLC': 'https://cdn.motor1.com/images/mgl/7oGQe/s1/mercedes-benz-glc.jpg',
+                'GLE': 'https://cdn.motor1.com/images/mgl/7oGQe/s1/mercedes-benz-gle.jpg'
             }
             
             fallback_url = simple_images.get(model_name)
@@ -251,6 +255,7 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         parse_mode='Markdown'
                     )
                 except:
+                    # Если и запасная картинка не работает, отправляем только текст
                     await update.message.reply_text(full_info, parse_mode='Markdown')
             else:
                 await update.message.reply_text(full_info, parse_mode='Markdown')
@@ -283,7 +288,7 @@ def main():
         print("🤖 Бот Mercedes запущен и готов к работе!")
         print("✅ Распознает сленговые названия")
         print("✅ Показывает цены и картинки")
-        print("✅ Использует проверенные ссылки на изображения")
+        print("✅ Добавляет ссылки на подробную информацию")
         application.run_polling()
         
     except Exception as e:
